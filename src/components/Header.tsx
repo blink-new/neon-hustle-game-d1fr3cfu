@@ -3,11 +3,12 @@ import { Progress } from './ui/progress';
 
 interface HeaderProps {
   coins: number;
+  gems: number;
   level: number;
   experience: number;
 }
 
-export const Header: React.FC<HeaderProps> = ({ coins, level, experience }) => {
+export const Header: React.FC<HeaderProps> = ({ coins, gems, level, experience }) => {
   const expToNextLevel = 100;
   const currentLevelExp = experience % expToNextLevel;
   const expProgress = (currentLevelExp / expToNextLevel) * 100;
@@ -31,6 +32,16 @@ export const Header: React.FC<HeaderProps> = ({ coins, level, experience }) => {
             </div>
             <span className="text-yellow-300 font-bold text-lg">
               {coins.toLocaleString()}
+            </span>
+          </div>
+
+          {/* Gems */}
+          <div className="flex items-center space-x-2">
+            <div className="w-8 h-8 rounded-full bg-gradient-to-r from-emerald-400 to-teal-500 flex items-center justify-center">
+              <span className="text-sm font-bold text-white">💎</span>
+            </div>
+            <span className="text-emerald-300 font-bold text-lg">
+              {gems.toLocaleString()}
             </span>
           </div>
 

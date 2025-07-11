@@ -1,5 +1,6 @@
 export interface GameState {
   coins: number;
+  gems: number;
   experience: number;
   level: number;
   unlockedZones: string[];
@@ -41,4 +42,40 @@ export interface MiniGame {
 export interface ShopItem extends InventoryItem {
   price: number;
   category: 'gear' | 'boosts' | 'decorations' | 'legendary' | 'passes';
+}
+
+export interface CoinPackage {
+  id: string;
+  name: string;
+  coins: number;
+  price: number;
+  bonus?: number;
+  popular?: boolean;
+  icon: string;
+  description: string;
+}
+
+export interface GemPackage {
+  id: string;
+  name: string;
+  gems: number;
+  price: number;
+  bonus?: number;
+  popular?: boolean;
+  icon: string;
+  description: string;
+}
+
+export interface GemShopItem {
+  id: string;
+  name: string;
+  type: 'boosts' | 'currency' | 'premium' | 'special';
+  price: number;
+  icon: string;
+  description: string;
+  effect: {
+    type: 'coin_multiplier' | 'coin_amount' | 'experience_multiplier' | 'instant_level' | 'premium_currency';
+    value: number;
+    duration?: number;
+  };
 }

@@ -3,6 +3,7 @@ import { GameState, InventoryItem, ActiveBoost } from '../types/game';
 
 const INITIAL_GAME_STATE: GameState = {
   coins: 0,
+  gems: 0,
   experience: 0,
   level: 1,
   unlockedZones: ['downtown'],
@@ -13,7 +14,15 @@ const INITIAL_GAME_STATE: GameState = {
 export const useGameState = () => {
   const [gameState, setGameState] = useState<GameState>(() => {
     const saved = localStorage.getItem('neonHustleGameState');
-    return saved ? JSON.parse(saved) : INITIAL_GAME_STATE;
+    if (saved) {
+      const parsedState = JSON.parse(saved);
+      // Migration: ensure gems property exists
+      if (parsedState.gems === undefined) {
+        parsedState.gems = 0;
+      }
+      return parsedState;
+    }
+    return INITIAL_GAME_STATE;
   });
 
   useEffect(() => {
@@ -28,6 +37,17 @@ export const useGameState = () => {
     setGameState(prev => ({ 
       ...prev, 
       coins: Math.max(0, prev.coins - amount) 
+    }));
+  };
+
+  const addGems = (amount: number) => {
+    setGameState(prev => ({ ...prev, gems: prev.gems + amount }));
+  };
+
+  const spendGems = (amount: number) => {
+    setGameState(prev => ({ 
+      ...prev, 
+      gems: Math.max(0, prev.gems - amount) 
     }));
   };
 
@@ -75,6 +95,8 @@ export const useGameState = () => {
     gameState,
     addCoins,
     spendCoins,
+    addGems,
+    spendGems,
     addExperience,
     addInventoryItem,
     addActiveBoost,
